@@ -93,6 +93,7 @@ public final class SftpClientFactory {
     private static final String KEY_PREFERRED_AUTHENTICATIONS = "PreferredAuthentications";
 
     private static final String KEY_STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
+    private static final String KEY_SERVER_HOST_KEY = "server_host_key";
 
     private static final String SSH_DIR_NAME = ".ssh";
     private static final String OPENSSH_CONFIG_NAME = "config";
@@ -183,6 +184,11 @@ public final class SftpClientFactory {
             final String strictHostKeyChecking = builder.getStrictHostKeyChecking(fileSystemOptions);
             if (strictHostKeyChecking != null) {
                 config.setProperty(KEY_STRICT_HOST_KEY_CHECKING, strictHostKeyChecking);
+            }
+            // set server_host_key property
+            final String serverHostKey = builder.getServerHostKey(fileSystemOptions);
+            if (serverHostKey != null) {
+                config.setProperty(KEY_SERVER_HOST_KEY, serverHostKey);
             }
             // set PreferredAuthentications property
             final String preferredAuthentications = builder.getPreferredAuthentications(fileSystemOptions);

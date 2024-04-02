@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileSystem;
 import org.apache.commons.vfs2.FileSystemConfigBuilder;
 import org.apache.commons.vfs2.FileSystemException;
@@ -127,6 +128,7 @@ public final class SftpFileSystemConfigBuilder extends FileSystemConfigBuilder {
     private static final String PROXY_USER = PREFIX + ".PROXY_USER";
     private static final String SESSION_TIMEOUT = PREFIX + ".TIMEOUT";
     private static final String STRICT_HOST_KEY_CHECKING = PREFIX + ".STRICT_HOST_KEY_CHECKING";
+    private static final String SERVER_HOST_KEY = PREFIX + ".SERVER_HOST_KEY";
     private static final String USER_DIR_IS_ROOT = PREFIX + ".USER_DIR_IS_ROOT";
 
     /**
@@ -404,6 +406,15 @@ public final class SftpFileSystemConfigBuilder extends FileSystemConfigBuilder {
      */
     public String getStrictHostKeyChecking(final FileSystemOptions options) {
         return this.getString(options, STRICT_HOST_KEY_CHECKING, HOST_KEY_CHECK_NO);
+    }
+
+    /**
+     * @param options The FileSystem options.
+     * @return the option value The server host key.
+     * @see #setServerHostKey(FileSystemOptions, String)
+     */
+    public String getServerHostKey(final FileSystemOptions options) {
+        return this.getString(options, SERVER_HOST_KEY, HOST_KEY_CHECK_NO);
     }
 
     /**
@@ -783,6 +794,28 @@ public final class SftpFileSystemConfigBuilder extends FileSystemConfigBuilder {
         }
 
         this.setParam(options, STRICT_HOST_KEY_CHECKING, hostKeyChecking);
+    }
+
+    /**
+     * Configures the server host key to use.
+     * <p>
+     * Valid arguments are: {@code "yes"}, {@code "no"} and {@code "ask"}.
+     * </p>
+     * <p>
+     * See the jsch documentation for details.
+     * </p>
+     *
+     * @param options            The FileSystem options.
+     * @param serverHostKey The Server host key.
+     * @throws FileSystemException if an error occurs.
+     */
+    public void setServerHostKey(final FileSystemOptions options, final String serverHostKey)
+            throws FileSystemException {
+        if (StringUtils.isBlank(serverHostKey)) {
+            throw new FileSystemException("vfs.provider.sftp/ServerHostKey-arg.error", serverHostKey);
+        }
+
+        this.setParam(options, SERVER_HOST_KEY, serverHostKey);
     }
 
     /**
