@@ -414,7 +414,7 @@ public final class SftpFileSystemConfigBuilder extends FileSystemConfigBuilder {
      * @see #setServerHostKey(FileSystemOptions, String)
      */
     public String getServerHostKey(final FileSystemOptions options) {
-        return this.getString(options, SERVER_HOST_KEY, HOST_KEY_CHECK_NO);
+        return this.getString(options, SERVER_HOST_KEY);
     }
 
     /**
